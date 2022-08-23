@@ -33,12 +33,19 @@ const {
     getChapter,
     createChapter, 
     deleteChapter,
-} = require("../controllers/chapter");
+} = require("../controllers/chapter.js");
+
 
 const {
-    getAssignment, createAssignment,
+    getResource,
+    createResource,
+    deleteResource,
+} = require("../controllers/resource");
+
+const {
+    getAssignment,
+    createAssignment,
     deleteAssignment,
-    //    listAssignment,
 } = require("../controllers/assignment");
 
 const {
@@ -156,6 +163,11 @@ router.get("/subjects/:subjectId/chapter/:chapterId/topic/:topicId/:weekId/remov
 router.get("/subjects/:subjectId/assignment", getAssignment);
 router.get("/subject/assignment/:subjectId/:chapterId/:assignmentId/delete", deleteAssignment);
 router.post("/assignment/create", createAssignment)
+
+router.get("/subjects/:subjectId/resource", getResource);
+router.get("/subject/resource/:subjectId/:chapterId/:resourceId/delete", deleteResource);
+router.post("/resource/create", createResource);
+
 //router.get("/listassignment", listAssignment);
 
 // router.get(
@@ -169,12 +181,12 @@ router.post("/assignment/create", createAssignment)
 
 // router.post("/subjects/:id/assignment/create", createAssignment);
 
-router.get(
-    "/subjects/:id/resources",
-    catchAsync(async (req, res) => {
-        res.render("dashboard_resources.ejs");
-    })
-);
+// router.get(
+//     "/subjects/:id/resources",
+//     catchAsync(async (req, res) => {
+//         res.render("dashboard_resources.ejs");
+//     })
+// );
 
 router.post(
     "/subjects/:id/resources",
