@@ -77,16 +77,12 @@
 
     function renderChapters(){
         let chapters = JSON.parse(`<%- subject %>`).chapters;
-        console.log(chapters);
                             
         const chapterBox = document.getElementById('chapter');
                             
         for(chapter of chapters){
-            console.log(chapter);
             if(!chapter.topics || chapter.topics.length === 0){
-                console.log(chapter);
                 continue;  
-                console.log("adsf");
             };
             let renderChapters = false;
             for(topic of chapter.topics){

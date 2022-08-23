@@ -99,7 +99,6 @@ exports.singleWeek = async(req, res) => {
         //     }
         // }])
 
-        console.log(currentWeek);
         return res.render("dashboard_week_edit", {
             plans: currentPlan,
             week: currentWeek[0],

@@ -6,7 +6,16 @@ module.exports = {
     "./views/components/*.ejs"
 ],
   theme: {
-    extend: {},
+    extend: {
+      // colors: ({ colors }) => ({
+      //   black: colors.black,
+      // })
+    },
   },
-  plugins: [],
+  plugins: [
+    {
+      tailwindcss: {},
+      autoprefixer: {},
+    }
+  ],
 }

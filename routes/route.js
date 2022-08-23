@@ -15,7 +15,6 @@ const User = require("../models/user.js");
 const Subject = require("../models/subjects.js");
 const Assignment = require("../models/assignments");
 const Resource = require("../models/resources");
-const Plan = require("../models/lessonplan.js");
 
 const {
     loginUser,
@@ -38,6 +37,7 @@ const {
 
 const {
     getAssignment, createAssignment,
+    deleteAssignment,
     //    listAssignment,
 } = require("../controllers/assignment");
 
@@ -153,19 +153,21 @@ router.get("/subjects/:subjectId/chapter/:chapterId/topic/:topicId/:weekId/remov
 
 // router.put('/subjects/:id/plan',catchAsync(async)
 
-router.get("/subjects/:id/assignment", getAssignment);
+router.get("/subjects/:subjectId/assignment", getAssignment);
+router.get("/subject/assignment/:subjectId/:chapterId/:assignmentId/delete", deleteAssignment);
+router.post("/assignment/create", createAssignment)
 //router.get("/listassignment", listAssignment);
 
-router.get(
-    "/subjects/:id/assignment/new",
-    catchAsync(async (req, res) => {
-        const { id } = req.params;
-        const subject = await Subject.findOne({"_id": id});
-        res.render("dashboard_new_assignment.ejs", { subject });
-    })
-);
+// router.get(
+//     "/subjects/:id/assignment/new",
+//     catchAsync(async (req, res) => {
+//         const { id } = req.params;
+//         const subject = await Subject.findOne({"_id": id});
+//         res.render("dashboard_new_assignment.ejs", { subject });
+//     })
+// );
 
-router.post("/subjects/:id/assignment", createAssignment);
+// router.post("/subjects/:id/assignment/create", createAssignment);
 
 router.get(
     "/subjects/:id/resources",

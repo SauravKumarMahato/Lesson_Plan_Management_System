@@ -6,7 +6,6 @@ const ObjectId = mongoose.Types.ObjectId;
 
 exports.createTopic = async(req, res) => {
     const { subjectId, chapterId, name } = req.body;
-    console.log(req.body);
     
     try{
         const currentUser = await User.findById(req.session.user_id);
@@ -59,7 +58,6 @@ exports.removeWeek = async(req, res) => {
 
 exports.deleteTopic = async(req, res) => {
     const { subjectId, chapterId, topicId } = req.params;
-    console.log(subjectId, chapterId, topicId);
     
     try{
         const currentUser = await User.findById(req.session.user_id);

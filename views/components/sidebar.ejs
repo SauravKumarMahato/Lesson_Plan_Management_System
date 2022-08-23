@@ -31,7 +31,6 @@
             navEls[i].parentNode.className += c
         }
         navEls[i].addEventListener("click", function() {
-            console.log('clicked')
             var current = document.getElementsByClassName(c);
             if (current.length > 0){
                 current[0].className = current[0].parentNode.className.replace(c, "");

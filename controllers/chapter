@@ -11,7 +11,6 @@ exports.getChapter = async (req, res) => {
         if(!currentUser.subjects.includes(subjectId)) return res.render("dashboard");
 
         const currentSubject = await Subject.findById(subjectId);
-        console.log(currentSubject);
         return res.render("dashboard_chapter", {
             subjectId,
             chapters: currentSubject.chapters, 

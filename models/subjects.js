@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs')
 const Assignment = require('./assignments');
 const Resource = require('./resources');
 const Schema = mongoose.Schema;
-const Plan = require('./lessonplan')
-
 
 const subjectSchema = new Schema({
     name: {
@@ -22,6 +20,9 @@ const subjectSchema = new Schema({
             type: String,
             required: true
         },
+        assignments: [{
+            type: Schema.Types.ObjectId,
+        }],
         topics: [{
             name: {
                 type: String,
@@ -33,11 +34,6 @@ const subjectSchema = new Schema({
         }]
     }],
 
-
-    // assignments: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Assignment'
-    // }],
 
     // image: {
     //     type: String
