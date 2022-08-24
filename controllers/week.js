@@ -13,7 +13,7 @@ exports.createWeek = async(req, res) => {
             return res.redirect("/dashboard");
         }
 
-        const currentSubject = await Subject.findOneAndUpdate({_id: subjectId});
+        const currentSubject = await Subject.findOne({_id: subjectId});
         if(!currentSubject) return res.render("dashboard");
         const currentPlan = await Plan.findById(currentSubject.plan);
         const weeks = currentPlan.weeks.length + 1;
@@ -23,7 +23,7 @@ exports.createWeek = async(req, res) => {
         return res.redirect(`/subjects/${subjectId}/plan`)
     }catch(err){
         console.log(err);
-        return res.send(err);
+        return res.redirect("/dashboard");
     }
 }
 
@@ -78,27 +78,6 @@ exports.singleWeek = async(req, res) => {
             }}
         ])
 
-
-        // const currentPlan = await Subject.aggregate([{
-        //     $match: { _id: subjectId },
-        //     $unwind: { path: "$chapters" },
-        //     $match: { "chapters_id": chapterId },
-        //     $replaceRoot: {
-        //         newRoot: {
-        //             "topics": "$chapters.topics",
-        //             "chapter": { "name": "$chapters.name", "_id": "$chapters._id"}
-        //         }
-        //     },
-        //     $unwind: { path: "$topics" },
-        //     $match: { "topics._id": toipcId },
-        //     $replaceRoot: {
-        //         newRoot: {
-        //             "topic": { "_id": "$topics._id", "name": "$topics.name"},
-        //             "chapter": "$chapter"
-        //         }
-        //     }
-        // }])
-
         return res.render("dashboard_week_edit", {
             plans: currentPlan,
             week: currentWeek[0],
@@ -113,6 +92,13 @@ exports.singleWeek = async(req, res) => {
 exports.addTopicToWeek = async(req, res) => {
     const {subjectId, weekId, topicId, chapterId} = req.body;
     try{
+
+        const currentUser = await User.findById(req.session.user_id);
+        
+        if(!currentUser.subjects.includes(subjectId)){
+            return res.redirect("/dashboard");
+        }
+
         const currentSubject = await Subject.findOneAndUpdate({
             _id: subjectId,
         }, {
@@ -132,41 +118,14 @@ exports.addTopicToWeek = async(req, res) => {
     }
 }
 
-// exports.addTopicToWeek = async(req, res) => {
-//     const {subjectId, chapterId, topicId} = req.body;
-//     try{
-//         const currentUser = await User.findById(req.session.user_id);
-        
-//         if(!currentUser.subjects.includes(subjectId)){
-//             return res.redirect("/dashboard");
-//         }
-
-//         const currentSubject = await Subject.findOneAndUpdate({
-//             _id: subjectId
-//         },{
-
-//         });
-//         if(!currentSubject) return res.redirect("/dashboard");
-
-//         console.log(currentSubject);
-
-// //        const currentPlan = await Plan.findOneAndUpdate({_id: currentSubject.plan}, {$push: {weeks: {subject: []}}})
-// //        console.log(currentPlan);
-//         //await newWeek.save();
-//         return res.redirect(`/subjects/${subjectId}/plan`)
-//     }catch(err){
-//         console.log("sss");
-//         console.log(err);
-//         return res.send(err);
-//     }
-
-// }
-
 exports.listWeek = async(req, res) => {
     const subjectId = req.params.subjectId;
     try{
         // const weeks = await Week.find();
         const currentUser = await User.findById(req.session.user_id);
+        if(!currentUser.subjects.includes(subjectId)){
+            return res.redirect("/dashboard");
+        }
         const currentSubject = await Subject.findById(subjectId);
         const plan = await Plan.findById(currentSubject.plan);
         res.render("dashboard_week", {

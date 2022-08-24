@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const Plan = require("../models/plan");
 
 exports.createUser = async(req, res) => {
     const { username, password, cpassword } = req.body;

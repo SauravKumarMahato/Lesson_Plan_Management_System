@@ -7,14 +7,8 @@ const multer = require("multer");
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
 const catchAsync = require("../utils/catchAsync");
-const ExpressError = require("../utils/ExpressError");
 const { storage } = require("../cloudinary/index");
 const bodyParser = require('body-parser')
-
-const User = require("../models/user.js");
-const Subject = require("../models/subjects.js");
-const Assignment = require("../models/assignments");
-const Resource = require("../models/resources");
 
 const {
     loginUser,
@@ -56,10 +50,6 @@ const {
     deleteWeek,
 } = require('../controllers/week');
 
-// const {
-    //     createPlan,
-    // } = require("../controllers/plan.js");
-    
 const {
     createTopic,
     removeWeek,
@@ -106,9 +96,14 @@ router.use(bodyParser.urlencoded({ extended: true }))
 
 router.get(
     "/",
-    catchAsync(async (req, res) => {
-        res.render("home.ejs", { errorMessage: "" });
-    })
+    async (req, res) => {
+        try{
+            res.render("home.ejs", { errorMessage: "" });
+        }catch(err){
+            console.log(err);
+            res.render("home.ejs", { errorMessage: "Unknown error occurred"});
+        }
+    }
 );
 
 router.get("/register", (req, res) => {
@@ -158,8 +153,6 @@ router.get("/subjects/:id", getSubjectById);
 router.get("/subjects/:subjectId/delete", deleteSubject);
 router.get("/subjects/:subjectId/chapter/:chapterId/topic/:topicId/:weekId/removeweek", removeWeek);
 
-// router.put('/subjects/:id/plan',catchAsync(async)
-
 router.get("/subjects/:subjectId/assignment", getAssignment);
 router.get("/subject/assignment/:subjectId/:chapterId/:assignmentId/delete", deleteAssignment);
 router.post("/assignment/create", createAssignment)
@@ -167,141 +160,5 @@ router.post("/assignment/create", createAssignment)
 router.get("/subjects/:subjectId/resource", getResource);
 router.get("/subject/resource/:subjectId/:chapterId/:resourceId/delete", deleteResource);
 router.post("/resource/create", createResource);
-
-//router.get("/listassignment", listAssignment);
-
-// router.get(
-//     "/subjects/:id/assignment/new",
-//     catchAsync(async (req, res) => {
-//         const { id } = req.params;
-//         const subject = await Subject.findOne({"_id": id});
-//         res.render("dashboard_new_assignment.ejs", { subject });
-//     })
-// );
-
-// router.post("/subjects/:id/assignment/create", createAssignment);
-
-// router.get(
-//     "/subjects/:id/resources",
-//     catchAsync(async (req, res) => {
-//         res.render("dashboard_resources.ejs");
-//     })
-// );
-
-router.post(
-    "/subjects/:id/resources",
-    upload.array("file"),
-    catchAsync(async (req, res) => {
-        const subject = await Subject.findById(req.params.id);
-
-        const resources1 = req.files.map((f) => ({
-            url: f.path,
-            filename: f.filename,
-        }));
-        const files = new Resource(resources1);
-        subject.resources.push(files);
-        await files.save();
-        await subject.save();
-        res.redirect(`/subjects/${subject._id}/resources`);
-        console.log(files);
-
-        console.log(subject);
-    })
-);
-
-router.get(
-    "/subjects/:id/resources/new",
-    catchAsync(async (req, res) => {
-        const subject = await Subject.findById(req.params.id);
-        res.render("dashboard_upload_resource.ejs", { subject });
-    })
-);
-
-router.delete(
-    "/subjects/:id/assignment/:assignmentId",
-    catchAsync(async (req, res) => {
-        const { id, assignmentId } = req.params;
-        await Subject.findByIdAndUpdate(id, {
-            $pull: { assignments: assignmentId },
-        });
-        await Assignment.findByIdAndDelete(assignmentId);
-        res.redirect(`/subjects/${id}/assignment`);
-    })
-);
-
-router.get(
-    "/calendar",
-    catchAsync(async (req, res) => {
-        res.render("dashboard_calendar.ejs");
-    })
-);
-
-// router.post('/subjects/:id/assignment', upload.single('image'), (req, res) => {
-//     console.log(req.body)
-//     console.log(req.file)
-//     res.send(req.body)
-// })
-
-// router.all("*", (req, res, next) => {
-//     next(new ExpressError("Page Not Found", 404));
-// });
-
-// router.get(
-//     "/subjects/:id/plan",
-//     catchAsync(async (req, res) => {
-//         const { id } = req.params;
-//         const subject = await Subject.findById(id).populate("plan");
-//         console.log(subject.plan.week);
-//         res.render("dashboard_table.ejs", { subject });
-//     })
-// );
-
-// router.get(
-//     "/subjects/:id/plan/new",
-//     catchAsync(async (req, res) => {
-//         const { id } = req.params;
-//         const subject = await Subject.findById(id);
-//         console.log(subject.name);
-//         res.render("dashboard_create.ejs", { subject });
-//     })
-// );
-
-// router.post(
-//     "/subjects/:id/plan",
-//     catchAsync(async (req, res, next) => {
-//         const subject = await Subject.findById(req.params.id);
-//         const plan = new Plan(req.body);
-//         subject.plan.push(plan);
-//         await plan.save();
-//         await subject.save();
-//         console.log(req.body);
-//         res.redirect(`/`);
-//         console.log("hurrayyyy");
-//     })
-// );
-
-// router.get(
-//     "/subjects/:id/plan/:planId/edit",
-//     catchAsync(async (req, res, next) => {
-//         const { id, planId } = req.params;
-//         const subject = await Subject.findById(id);
-//         const plan = await Plan.findById(planId);
-//         console.log(plan);
-//         res.render(`dashboard_edit_plan.ejs`, { subject, plan });
-//     })
-// );
-
-// router.put(
-//     "/subjects/:id/plan/:planId",
-//     catchAsync(async (req, res) => {
-//         console.log("gg");
-//         const { id, planId } = req.params;
-
-//         // await Subject.findByIdAndUpdate(id, {...req.body });
-//         await Plan.findByIdAndUpdate(planId, { ...req.body });
-//         res.redirect(`/subjects/${id}/plan`);
-//     })
-// );
-
 
 module.exports = router;

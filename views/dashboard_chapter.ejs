@@ -22,7 +22,7 @@
                                 <p>
                                     <span class="text-xl"><span><%= i+1 %>.<%= j+1 %>. &nbsp</span><%= chapters[i].topics[j].name %></span> &nbsp;
                                     <% if(chapters[i].topics[j].week) { %>
-                                        <span><a href="/subjects/<%= subjectId %>/plan/<%= chapters[i].topics[j].week %>/">Go to week</a></span>
+                                        <span><a target="_blank" href="/subjects/<%= subjectId %>/plan/<%= chapters[i].topics[j].week %>/">(Week <%= plan.weeks.map(e => e._id).indexOf(chapters[i].topics[j].week) +1 %>)</a></span>
                                     <% } %>
                                     <a href="/subjects/<%= subjectId %>/chapter/<%= chapters[i]._id %>/<%= chapters[i].topics[j]._id %>/delete" class="text-red-500">Delete</a>
                                 </p>

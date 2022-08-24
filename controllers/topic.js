@@ -11,11 +11,11 @@ exports.createTopic = async(req, res) => {
         const currentUser = await User.findById(req.session.user_id);
         if(!currentUser.subjects.includes(subjectId)) return res.render("dashboard");
         
-        const chapter = {
+        const topic = {
             name
         }
         const currentSubject = await Subject.findOneAndUpdate({_id: subjectId, "chapters._id": chapterId}, {
-            $push: { "chapters.$.topics": chapter}
+            $push: { "chapters.$.topics": topic}
         });
         
         return res.redirect(`/subjects/${subjectId}/chapter`)
@@ -40,7 +40,6 @@ exports.removeWeek = async(req, res) => {
             $set: { "chapters.$[chapters].topics.$[topics].week": null}
         },{
             "multi": false,
-            "upsert": true,
             arrayFilters: [
                 { "chapters._id": { "$eq": chapterId } },
                 { "topics._id": { "$eq": topicId } },
@@ -66,7 +65,6 @@ exports.deleteTopic = async(req, res) => {
         const currentSubject = await Subject.findOneAndUpdate({
             _id: ObjectId(subjectId), 
             "chapters._id": ObjectId(chapterId), 
-        //    "chapters.topics._id": ObjectId(topicId)
         }, {
             $pull: { "chapters.$.topics": { "_id": ObjectId(topicId) }}
         });

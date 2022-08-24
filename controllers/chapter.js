@@ -1,5 +1,6 @@
 const Subject = require("../models/subjects");
 const User = require("../models/user");
+const Plan = require("../models/plan")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -11,8 +12,12 @@ exports.getChapter = async (req, res) => {
         if(!currentUser.subjects.includes(subjectId)) return res.render("dashboard");
 
         const currentSubject = await Subject.findById(subjectId);
+        const currentPlan = await Plan.findById(currentSubject.plan);
+        console.log(currentPlan);
+        // console.log(currentSubject.chapters);
         return res.render("dashboard_chapter", {
             subjectId,
+            plan: currentPlan,
             chapters: currentSubject.chapters, 
         });
     }catch(err){
