@@ -16,22 +16,6 @@ exports.getSubject = async(req, res) => {
     }
 }
 
-exports.getSubjectById = async(req, res) => {
-    try{
-        const { id } = req.params;
-        
-        const currentUser = await User.findById(req.session.user_id);
-        if(currentUser.subjects.includes(id)){
-            const subject = await Subject.findById(id);
-            return res.render("dashboard_subject.ejs", { subject });
-        }
-        return res.render("dashboard.ejs");
-    }catch(err){
-        return res.render("dashboard.ejs");
-    }
-}
-
-
 exports.createSubject = async(req, res) => {
     const {name} = req.body;
     try{

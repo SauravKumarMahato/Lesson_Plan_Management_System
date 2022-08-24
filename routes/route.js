@@ -140,15 +140,8 @@ router.get(
 
 router.get("/subjects", getSubject);
 
-router.get(
-    "/subjects/new",
-    catchAsync(async (req, res) => {
-        res.render("dashboard_new_sub.ejs");
-    })
-);
-
-router.post("/subjects", createSubject);
-router.get("/subjects/:id", getSubjectById);
+router.post("/subject/create", createSubject);
+// router.get("/subjects/:id", getSubjectById);
 
 router.get("/subjects/:subjectId/delete", deleteSubject);
 router.get("/subjects/:subjectId/chapter/:chapterId/topic/:topicId/:weekId/removeweek", removeWeek);
