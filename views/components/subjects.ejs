@@ -1,15 +1,23 @@
+<div class="flex flex-wrap justify-start content-start items-center">
 <% for (let subject of subjects){%>
-    <div class="container">
-        <div class="card">
-            <div class="box">
-                <div class="content p-5 border">
-                    <h3 class="py-4">
+            <div class="box bg-indigo-400 text-center shadow-lg rounded-md m-4">
+                <div class="p-5">
+                    <h1 class="text-white font-bold text-xl leading-tight mb-2">
                         <%= subject.name %>
-                    </h3>
-                    <a href="/subjects/<%= subject._id %> ">Click for details</a><br/>
-                    <a class="text-red-500" href="/subjects/<%= subject._id %>/delete ">Delete</a>
+                    </h1>
+                    <p class="inline-flex">
+                        <span 
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline"
+>
+                            <a href="/subjects/<%= subject._id %> " class="text-white">Details</a><br/>
+                        </span>
+                        <span 
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-10 ml-2 rounded shadow-lg focus:outline-none focus:shadow-outline"
+>
+                            <a  href="/subjects/<%= subject._id %>/delete ">Delete</a>
+                        </span>
+                    </p>
                 </div>
             </div>
-        </div>
-    </div>
 <% }%>
+</div>
