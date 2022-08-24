@@ -33,7 +33,7 @@ exports.removeWeek = async(req, res) => {
         const currentUser = await User.findById(req.session.user_id);
         
         if(!currentUser.subjects.includes(subjectId)){
-            return res.redirect("/dashboard");
+            return res.redirect("/subjects");
         }
 
         const currentSubject = await Subject.findOneAndUpdate({_id: ObjectId(subjectId)},{
@@ -50,7 +50,7 @@ exports.removeWeek = async(req, res) => {
         return res.redirect(`/subjects/${currentSubject._id}/plan/${weekId}`);
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard");
+        return res.redirect("/subjects");
     }
 
 }
@@ -60,7 +60,7 @@ exports.deleteTopic = async(req, res) => {
     
     try{
         const currentUser = await User.findById(req.session.user_id);
-        if(!currentUser.subjects.includes(subjectId)) return res.redirect("/dashboard");
+        if(!currentUser.subjects.includes(subjectId)) return res.redirect("/subjects");
         
         const currentSubject = await Subject.findOneAndUpdate({
             _id: ObjectId(subjectId), 
@@ -72,6 +72,6 @@ exports.deleteTopic = async(req, res) => {
         return res.redirect(`/subjects/${subjectId}/chapter`)
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard");
+        return res.redirect("/subjects");
     }
 }

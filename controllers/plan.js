@@ -19,6 +19,6 @@ exports.createPlan = async(req, res) => {
         return res.redirect(`/subjects/${currentSubject._id}/plan/${weekId}`)
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard");
+        return res.redirect("/subjects");
     }
 }

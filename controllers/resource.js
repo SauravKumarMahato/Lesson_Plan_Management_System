@@ -1,6 +1,10 @@
 const Subject = require("../models/subjects");
 const Resource = require("../models/resources");
 const User = require("../models/user");
+
+const multer = require("multer");
+const { storage} = require("../upload/index");
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -9,7 +13,7 @@ exports.getResource = async(req, res) => {
     try{
         const currentUser = await User.findById(req.session.user_id);
         
-        if(!currentUser.subjects.includes(subjectId)) return res.redirect("/dashboard");
+        if(!currentUser.subjects.includes(subjectId)) return res.redirect("/subjects");
 
         const currentSubject = await Subject.aggregate([
             { $match: { "_id": ObjectId(subjectId) }},
@@ -29,7 +33,6 @@ exports.getResource = async(req, res) => {
                 }  
             }}
         ])
-        console.log(currentSubject);
 
         res.render("dashboard_resources.ejs", { subject: currentSubject[0] });
     }catch(err){
@@ -39,30 +42,41 @@ exports.getResource = async(req, res) => {
 }
 
 exports.createResource = async(req, res) => {
-    const { subjectId, chapterId, title, body } = req.body;
     try{
-        const currentUser = await User.findById(req.session.user_id);
-        console.log(currentUser);
+        const upload = multer({
+            storage: storage,
+        }).single("resource-file");
         
-        if(!currentUser.subjects.includes(subjectId)){
-            return res.redirect("/dashboard");
-        }
-       
-        const resource = {
-            title: req.body.title,
-            body: req.body.body,
-        };
 
-        const currentResource = new Resource(resource);
-        const currentSubject = await Subject.findOneAndUpdate({_id: subjectId, "chapters._id": chapterId}, {
-            $push: { "chapters.$.resources": currentResource._id}
+        upload(req, res, async (err) => {
+            const { subjectId, chapterId, title  } = req.body;
+            if(err){
+                console.log(err);
+                res.redirect(`/subjects/${subjectId}/resource`);
+            }
+
+            const currentUser = await User.findById(req.session.user_id);
+
+            if(!currentUser.subjects.includes(subjectId)){
+                return res.redirect("/subjects");
+            }
+        
+            const resource = {
+                title: title,
+                file: req.file.filename,
+            };
+
+            const currentResource = new Resource(resource);
+            const currentSubject = await Subject.findOneAndUpdate({_id: subjectId, "chapters._id": chapterId}, {
+                $push: { "chapters.$.resources": currentResource._id}
+            });
+
+            await currentResource.save();
+            res.redirect(`/subjects/${subjectId}/resource`);
         });
-
-        await currentResource.save();
-        res.redirect(`/subjects/${subjectId}/resource`);
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard");
+        return res.redirect("/subjects");
     }
 }
 
@@ -73,7 +87,7 @@ exports.deleteResource = async (req, res) => {
         const currentUser = await User.findById(req.session.user_id);
         
         if(!currentUser.subjects.includes(subjectId)){
-            return res.redirect("/dashboard");
+            return res.redirect("/subjects");
         }
 
         const currentResource = await Resource.findByIdAndDelete(resourceId);
@@ -85,6 +99,6 @@ exports.deleteResource = async (req, res) => {
         res.redirect(`/subjects/${subjectId}/resource`);
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard");
+        return res.redirect("/subjects");
     }
 }

@@ -12,7 +12,7 @@ exports.getSubject = async(req, res) => {
         res.render("dashboard_subjects.ejs", { subjects });
     }catch(err){
         console.log(err);
-        return res.redirect("/dashboard")
+        return res.redirect("/subjects")
     }
 }
 

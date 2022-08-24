@@ -2,13 +2,11 @@ const dburl = 'mongodb://127.0.0.1:27017/lpms';
 const express = require("express");
 
 const router = express.Router();
-const multer = require("multer");
 
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
-const catchAsync = require("../utils/catchAsync");
-const { storage } = require("../cloudinary/index");
 const bodyParser = require('body-parser')
+
 
 const {
     loginUser,
@@ -55,8 +53,6 @@ const {
     removeWeek,
     deleteTopic,
 } = require("../controllers/topic");
-    
-const upload = multer({ storage });
 
 const requireLogin = async(req, res, next) => {
     if (!req.session.user_id) {
@@ -131,17 +127,9 @@ router.post("/week/addtopic", addTopicToWeek);
 router.get("/subjects/:subjectId/chapter/:chapterId/:topicId/delete", deleteTopic);
 
 
-router.get(
-    "/dashboard",
-    catchAsync(async (req, res) => {
-        res.render("dashboard.ejs");
-    })
-);
-
 router.get("/subjects", getSubject);
 
 router.post("/subject/create", createSubject);
-// router.get("/subjects/:id", getSubjectById);
 
 router.get("/subjects/:subjectId/delete", deleteSubject);
 router.get("/subjects/:subjectId/chapter/:chapterId/topic/:topicId/:weekId/removeweek", removeWeek);
@@ -153,5 +141,10 @@ router.post("/assignment/create", createAssignment)
 router.get("/subjects/:subjectId/resource", getResource);
 router.get("/subject/resource/:subjectId/:chapterId/:resourceId/delete", deleteResource);
 router.post("/resource/create", createResource);
+
+
+router.get('*', function(req, res){
+    res.status(404).render('error.ejs');
+});  
 
 module.exports = router;

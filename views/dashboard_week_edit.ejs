@@ -1,13 +1,15 @@
 <%- include('components/header') %>
-<div class="flex flex-row">
+<div class="flex md:flex-row flex-col">
     <div >
         <%- include('components/sidebar') %>
     </div>
-    <div class="">
-        <div class="w-100 text-xl border-2 border-red-500">
-            <a class="bg-indigo-200 p-2 border-r-2 border-red-500" href="/subjects/<%= JSON.parse(subject)._id %>">Overview</a>&nbsp;
-            <a class="bg-indigo-200 p-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan">Weeks</a>&nbsp;
-            <a class="bg-indigo-200 p-2" href="/subjects/<%= JSON.parse(subject)._id %>/chapter">Chapters</a>
+    <div class="flex flex-col w-full">
+
+        <div class="text-xl p-4 bg-indigo-200">
+            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan">Weekly Plan</a>&nbsp;
+            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/chapter">Chapters</a>
+            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/assignment">Assignment</a>&nbsp;
+            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/resource">Resources</a>&nbsp;
         </div>
         <div class="p-5">
 

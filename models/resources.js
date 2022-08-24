@@ -6,10 +6,10 @@ const resourceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    body: {
+    file: {
         type: String,
         required: true
-    },
+    }
 
 })
 const Resource = mongoose.model('Resource', resourceSchema);

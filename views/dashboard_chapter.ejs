@@ -4,10 +4,11 @@
     <div >
         <%- include('components/sidebar') %>
     </div>
-    <div>
-        <div class="p-2 w-100 bg-indigo-200 text-xl">
-            <a href="/subjects/<%= subjectId %>">Overview</a>&nbsp;
-            <a href="/subjects/<%= subjectId %>/plan">Weekly Plan</a>
+    <div class="flex flex-col w-full">    
+        <div class=" text-xl p-4 bg-indigo-200">
+            <a class="p-2" href="/subjects/<%= subjectId %>/plan">Weekly Plan</a>
+            <a class="p-2" href="/subjects/<%= subjectId %>/assignment">Assignments</a>&nbsp;
+            <a class="p-2" href="/subjects/<%= subjectId %>/resource">Resources</a>&nbsp;
         </div>
         <div class="p-5">
             <h1 class="text-3xl py-4">Chapters</h1>

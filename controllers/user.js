@@ -15,7 +15,7 @@ exports.createUser = async(req, res) => {
             await user.save();
             req.session.user_id = user._id;
             req.session.save();
-            return res.redirect("/dashboard");
+            return res.redirect("/subjects");
         } else {
             return res.render("register", {
                 errorMessage: "Password didn't match.",
@@ -37,7 +37,7 @@ exports.loginUser = async(req, res) => {
         const currentUser = await User.findAndValidate(username, password);
         if (currentUser) {
             req.session.user_id = currentUser._id;
-            res.redirect("/dashboard");
+            res.redirect("/subjects");
         } else {
             res.render("home.ejs", {
                 errorMessage: "Invalid email or password."
