@@ -1,7 +1,7 @@
-<div>
-    <div class="flex flex-wrap justify-start content-start items-center">
-        <% for (let subject of subjects){%>
-            <div class="box bg-indigo-400 text-center shadow-lg rounded-md m-4">
+
+<div class="flex flex-wrap justify-start content-start items-center">
+<% for (let subject of subjects){%>
+            <div class="box bg-indigo-400 text-center shadow-lg rounded-md m-2">
                 <div class="p-5">
                     <h1 class="text-white font-bold text-xl leading-tight mb-2">
                         <%= subject.name %>
@@ -18,6 +18,27 @@
                         <a  href="/subjects/<%= subject._id %>/delete ">Delete</a>
                     </span>
                 </p>
+                    <p class="flex flex-col">
+                            <a
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline mb-2"
+                             href="/subjects/<%= subject._id %>/plan/" class="text-white">Weekly Plan</a>
+                            <a
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline mb-2"
+                             href="/subjects/<%= subject._id %>/chapter" class="text-white">Chapters</a>
+                            <a
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline mb-2"
+                             href="/subjects/<%= subject._id %>/assignment/ " class="text-white">Assignments</a>
+                            <a
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline mb-2"
+                             href="/subjects/<%= subject._id %>/resource" class="text-white">Resources</a>
+                            <!-- <a
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline mb-2"
+                             href="/subjects/<%= subject._id %> " class="text-white">Details</a> -->
+                            <a
+                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-10 rounded shadow-lg focus:outline-none focus:shadow-outline"
+                              href="/subjects/<%= subject._id %>/delete ">Delete</a>
+                    </p>
+                </div>
             </div>
         </div>
         <% }%>
