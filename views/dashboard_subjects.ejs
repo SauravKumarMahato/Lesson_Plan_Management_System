@@ -2,22 +2,24 @@
 <body class="font-sans">
         
         <%- include('components/sidebar') %>
-        <form class="p-3 px-5" method="POST" action="/subject/create">
-            <input 
-            class="block shadow border rounded p-2"
-            placeholder="Title"
-            name="name"
-            type="text"
-            required
-            />
-            <button class="p-2 rounded bg-blue-500 mt-2" type="submit">Create Subject</button>
-        </form>
-    <div class="flex md:flex-row flex-col">
-        <div>
+
+            
+            <form class="p-3 px-5 flex mt-3" method="POST" action="/subject/create">
+                <input 
+                class="block shadow border rounded p-2"
+                placeholder="Title"
+                name="name"
+                type="text"
+                required
+                />
+                <button class="p-2 rounded bg-blue-500 ml-2" type="submit">Create Subject</button>
+            </form>
+        <div class="flex md:flex-row flex-col">
+            <div>
         <div class="mx-5 flex">
-                <div class="flex flex-wrap justify-start content-start items-center">
+                <div class="flex flex-wrap justify-center content-start items-center">
                     <% for (let subject of subjects){%>
-                        <div class="box bg-indigo-400 text-center shadow-lg rounded-md m-4">
+                        <div class="box bg-blue-400 text-center shadow-lg rounded-md m-4">
                             <div class="p-5">
                                 <h1 class="text-white font-bold text-xl leading-tight mb-2">
                                     <%= subject.name %>
