@@ -39,18 +39,18 @@
                                         <table class="table-auto w-full">
                                             <% for(assignment of chapter.assignments) { %> 
                                                 <tr>
-                                                    <td class="border-b border-gray-500 pl-8">
+                                                    <td class="pl-8">
                                                         <%= assignment.title %></br>
                                                     </td>
-                                                    <td class="p-4 border-b border-gray-500 pl-8">
+                                                    <td class="p-4 pl-8">
                                                         <%= assignment.body %></br>
                                                     </td>
-                                                    <td class="p-4 border-b border-gray-500 pl-8">
+                                                    <td class="p-4 pl-8">
                                                         <% if(assignment.file){ %>
                                                             <a class="text-blue-500" target="_blank" href="/files/<%= assignment.file %>">View File</a></br>
                                                             <% } %>
                                                     </td>
-                                                    <td class="p-4 border-b border-gray-500 pl-8 text-red-500">
+                                                    <td class="p-4 pl-8 text-red-500">
                                                         <a href="/subject/assignment/<%= subject._id %>/<%= chapter._id %>/<%= assignment._id %>/delete">Delete</a>
                                                     </td>
                                                 </tr>
