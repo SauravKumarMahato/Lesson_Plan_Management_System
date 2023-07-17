@@ -178,6 +178,8 @@ exports.deleteWeek = async(req, res) => {
 
 exports.deleteAllWeeks = async(req, res) => {
     const { subjectId } = req.params;
+    const valueid = req.params.valueid;
+    const val = req.params.val;
 
     try{
         const currentUser = await User.findById(req.session.user_id);
@@ -191,19 +193,25 @@ exports.deleteAllWeeks = async(req, res) => {
             return res.redirect("/subjects");
         }
 
-        const updatedPlan = await Plan.findOneAndUpdate({_id: currentSubject.plan}, {
-            $pull: {
-                weeks: { _id: ObjectId(weekId) }
-            }
-        });
+        
+        const plan = await Plan.findById(currentSubject.plan);
 
-        const updatedSubjects = await Subject.findOneAndUpdate({
-            _id: ObjectId(currentSubject._id)
-        },{
-            $set: { "chapters.$[].topics.$[].week": null},
-        },{
-            $arrayFilters: [{ "chapters.topics.week": currentSubject._id}]
-        })
+        for (i = 0; i < plan.weeks.length; i++){
+            const updatedPlan = await Plan.findOneAndUpdate({_id: currentSubject.plan}, {
+            $pull: {
+                weeks: { _id: ObjectId(plan.weeks[i]._id)}
+            }
+            });
+        }
+        console.log(valueid)
+            const updatedSubjects = await Subject.findOneAndUpdate({
+                _id: ObjectId(currentSubject._id)
+            },{
+                $set: { "chapters.$[].topics.$[].week": null},
+            },{
+                $arrayFilters: [{ "chapters.topics.week": currentSubject._id}]
+            })
+        
 
         return res.redirect(`/subjects/${currentSubject._id}/plan/`);
     }catch(err){
