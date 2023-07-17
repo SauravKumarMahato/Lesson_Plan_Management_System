@@ -118,7 +118,7 @@ router.post("/week/create", createWeek)
 router.get("/subjects/:subjectId/plan", listWeek);
 router.get("/subjects/:subjectId/plan/:weekId", singleWeek);
 router.get("/subjects/:subjectId/plan/:weekId/delete", deleteWeek);
-router.get("/subjects/:subjectId/plan/deleteAllWeeks", deleteAllWeeks);
+router.post("/subjects/:subjectId/plan/deleteAllWeeks", deleteAllWeeks);
 
 router.post("/chapter/create", createChapter);
 router.get("/subjects/:subjectId/chapter", getChapter);
