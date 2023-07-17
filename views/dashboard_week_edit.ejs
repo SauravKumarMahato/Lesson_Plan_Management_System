@@ -1,16 +1,27 @@
 <%- include('components/header') %>
-<div class="flex md:flex-row flex-col">
-    <div >
-        <%- include('components/sidebar') %>
+
+<body class="font-sans bg-slate-50">
+<div >
+    <nav class="py-4  bg-blue-400 text-white text-base">
+        <ul class="flex ">
+            <li class="px-5 mr-14 text-xl font-bold">LPMS</li>
+            <!-- <li class="font-bold text-lg "><a href="/subjects">Subjects</a></li> -->
+            <a class="font-bold text-lg mr-4" href="/subjects/">Subjects</a>&nbsp;
+            <a class="font-bold text-lg mx-4" href="/subjects/<%= JSON.parse(subject)._id %>/plan">Weekly Plan</a>&nbsp;
+            <a class="font-bold text-lg mx-4" href="/subjects/<%= JSON.parse(subject)._id %>/chapter">Chapters</a>
+            <a class="font-bold text-lg mx-4" href="/subjects/<%= JSON.parse(subject)._id %>/assignment">Assignments</a>&nbsp;
+            <a class="font-bold text-lg mx-4" href="/subjects/<%= JSON.parse(subject)._id %>/resource">Resources</a>&nbsp;
+            <li class="absolute right-0 h-16 pr-20 rounded-full">
+            <form class="rounded-full bg-indigo-700 px-10 py-1 hover:bg-indigo-900" action="/logout" method="post"><input class = "hover:cursor-pointer" type="submit" value="Logout"></form>
+          </li>
+
+        </ul>
+    </nav>
+
+<div class="mx-52">
+    <div class="flex md:flex-row flex-col">
     </div>
     <div class="flex flex-col w-full">
-
-        <div class="text-xl p-4 bg-indigo-200">
-            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan">Weekly Plan</a>&nbsp;
-            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/chapter">Chapters</a>
-            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/assignment">Assignment</a>&nbsp;
-            <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/resource">Resources</a>&nbsp;
-        </div>
         <div class="p-5">
 
             <p class="text-3xl py-4">Week <%= week.index+1 %> of <%= JSON.parse(subject).name %> </pj>
@@ -31,9 +42,9 @@
             </div>
                         
             <form method="POST" action="/week/addtopic">
-                <select class="p-2" name="chapterId" id="chapter" onchange="changeTopics(this.value)">
+                <select class="p-2 mx-2 bg-gray-300 rounded w-50" name="chapterId" id="chapter" onchange="changeTopics(this.value)">
                 </select>
-                <select class="p-2" name="topicId" id="topic">
+                <select class="p-2 mx-2 bg-gray-300 rounded" name="topicId" id="topic">
                 </select>
                 <input
                     type="hidden"
@@ -45,12 +56,13 @@
                     name="weekId"
                     value="<%= week._id %>"
                 />
-                <button class="p-2 rounded bg-blue-500 mt-2" type="submit">
+                <button class="p-2 rounded bg-blue-500 mt-2 mx-2" type="submit">
                     Add Plan 
                 </button>
             </form>
         </div>
     </div>
+</div>
 </div>
                     
 <script>
@@ -108,6 +120,6 @@
     renderChapters();
     changeTopics(document.getElementById("chapter").value)
 </script>
-
+</body>
 
 <%- include('components/footer') %>

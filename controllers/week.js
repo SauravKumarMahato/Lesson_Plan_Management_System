@@ -174,3 +174,48 @@ exports.deleteWeek = async(req, res) => {
         return res.redirect("/subjects");
     }
 }
+
+
+exports.deleteAllWeeks = async(req, res) => {
+    const { subjectId } = req.params;
+
+    try{
+        const currentUser = await User.findById(req.session.user_id);
+        
+        if(!currentUser.subjects.includes(subjectId)){
+            return res.redirect("/subjects");
+        }
+
+        const currentSubject = await Subject.findById(subjectId);
+        if(!currentSubject){
+            return res.redirect("/subjects");
+        }
+
+        const updatedPlan = await Plan.findOneAndUpdate({_id: currentSubject.plan}, {
+            $pull: {
+                weeks: { _id: ObjectId(weekId) }
+            }
+        });
+
+        const updatedSubjects = await Subject.findOneAndUpdate({
+            _id: ObjectId(currentSubject._id)
+        },{
+            $set: { "chapters.$[].topics.$[].week": null},
+        },{
+            $arrayFilters: [{ "chapters.topics.week": currentSubject._id}]
+        })
+
+        return res.redirect(`/subjects/${currentSubject._id}/plan/`);
+    }catch(err){
+        console.log(err);
+        return res.redirect("/subjects");
+    }
+
+    // sib.findById(req.params.id)
+    // .then(user =>{
+    //     user.username = req.body.username;
+    //     user.save()
+    //     res.json('User detail updated')
+    // })
+    // .catch(err => res.status(400).json('Error: '+ err));
+}
