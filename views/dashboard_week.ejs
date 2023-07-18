@@ -21,13 +21,6 @@
           </nav>
         </div>        
     </div>
-    <!-- <div class="flex flex-col w-full"> -->
-
-    <!-- <div class="p-4 text-xl bg-indigo-200 border-2">
-        <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/chapter">Chapters</a>
-        <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/assignment">Assignments</a>&nbsp;
-        <a class="p-2" href="/subjects/<%= JSON.parse(subject)._id %>/resource">Resources</a>&nbsp;
-    </div> -->
     
     <div class="mx-52">
         <div class="p-5">
@@ -47,9 +40,9 @@
                 </form>
 
 
-                <form  method="POST" action="/subjects/<%= JSON.parse(subject)._id %>/plan/deleteAllWeeks">
-                    <button class="text-red-500 rounded bg-blue-400 p-2 mx-4" onclick="deleteWeeks()">Delete All</button>
-                </form>
+                <form id="deleteForm" method="POST" action="/subjects/<%= JSON.parse(subject)._id %>/plan/deleteAllWeeks">
+                    <button class="text-red-500 rounded bg-blue-400 p-2 mx-4" id="deleteButton">Delete All</button>
+                  </form>
             </div>    
             
 
@@ -59,7 +52,7 @@
                 <% for(let week in weeks) { %>
                     <p>Week <%= parseInt(week)+1 %>
                         <a class="text-blue-700 mx-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%=  weeks[week]._id%>">edit</a>
-                        <a class="text-red-500 mx-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%=  weeks[week]._id%>/delete">Delete</a>
+                        <a class="text-red-500 mx-2" id="deleteButton" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%=  weeks[week]._id%>/delete">Delete</a>
                     </p>
                     <% } %>
                 </div>
@@ -69,15 +62,29 @@
         </div>
 
     </div>
-<!-- 
+
+
     <script>
-        function deleteWeeks() {
-            let weeks = '<=0/0 weeks 0/0>';  
-            weeks = '0' ;
-          var weeksContainer = document.getElementById("weeksContainer");
-          weeksContainer.innerHTML = ""; // Remove the HTML content inside the weekContainer div
-        }
-      </script> -->
+        // Get the delete form element and delete button element
+        const deleteForm = document.getElementById('deleteForm');
+        const deleteButton = document.getElementById('deleteButton');
+      
+        // Add a click event listener to the delete button
+        deleteButton.addEventListener('click', function(event) {
+          // Prevent the default form submission behavior
+          event.preventDefault();
+      
+          // Display an alert before performing the deletion
+          if (confirm('Are you sure you want to delete all weeks?')) {
+            // Submit the form programmatically
+            deleteForm.submit();
+          } else {
+            // If user clicks "Cancel" or closes the alert, do nothing
+          }
+        });
+      </script>
+    
+
         
 </body>
     <%- include('components/footer') %>
