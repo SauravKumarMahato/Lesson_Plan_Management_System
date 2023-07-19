@@ -89,6 +89,57 @@ exports.singleWeek = async(req, res) => {
     }
 }
 
+// const mongoose = require("mongoose");
+
+exports.viewAllWeeks = async (req, res) => {
+  const { subjectId } = req.params;
+
+  try {
+    const currentUser = await User.findById(req.session.user_id);
+
+    if (!currentUser.subjects.includes(subjectId)) {
+      return res.redirect("/subjects");
+    }
+
+    const currentSubject = await Subject.findById(subjectId);
+    if (!currentSubject) {
+      return res.redirect("/subjects");
+    }
+
+    const currentPlan = await Subject.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(subjectId) } },
+      { $unwind: { path: "$chapters" } },
+      { $replaceRoot: { newRoot: "$chapters" } },
+      {
+        $group: {
+          _id: "$topics.week",
+          topics: { $push: "$topics" },
+          name: { $first: "$name" }
+        }
+      }
+    ]);
+
+    const weekIds = currentPlan.map((week) => week._id);
+
+    const currentWeeks = await Plan.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(currentSubject.plan) } },
+      { $unwind: { path: "$weeks" } },
+      { $match: { "weeks._id": { $in: weekIds.map((id) => mongoose.Types.ObjectId(id)) } } },
+      { $project: { "weeks._id": 1, index: { $indexOfArray: ["$weeks._id", "$weeks._id"] } } }
+    ]);
+
+    return res.render("dashboard_all_weeks", {
+      plans: currentPlan,
+      weeks: currentWeeks,
+      subject: JSON.stringify(currentSubject)
+    });
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/subjects");
+  }
+};
+
+  
 exports.addTopicToWeek = async(req, res) => {
     const {subjectId, weekId, topicId, chapterId} = req.body;
     try{
