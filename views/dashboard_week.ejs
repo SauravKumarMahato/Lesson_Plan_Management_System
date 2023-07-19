@@ -43,21 +43,24 @@
                 <form id="deleteForm" method="POST" action="/subjects/<%= JSON.parse(subject)._id %>/plan/deleteAllWeeks">
                     <button class="text-red-500 rounded bg-blue-400 p-2 mx-4" id="deleteButton">Delete All</button>
                   </form>
+                  
+                  <a class="rounded bg-blue-400 p-2 mx-4" href="/subjects/<%= JSON.parse(subject)._id %>/plan/viewAllWeeks" >View All </a>
+                 
+                  
             </div>    
             
 
                     
 
             <div class="mx-5" id="weeksContainer">
-                <% for(let week in weeks) { %>
-                    <p>Week <%= parseInt(week)+1 %>
-                        <a class="text-blue-700 mx-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%=  weeks[week]._id%>">edit</a>
-                        <a class="text-red-500 mx-2" id="deleteButton" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%=  weeks[week]._id%>/delete">Delete</a>
-                    </p>
-                    <% } %>
-                </div>
-
-            </div>
+                <% for (let week in weeks) { %>
+                <p>
+                  Week <%= parseInt(week) + 1 %>
+                  <a class="text-blue-700 mx-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%= weeks[week]._id %>">edit</a>
+                  <a class="text-red-500 mx-2" href="/subjects/<%= JSON.parse(subject)._id %>/plan/<%= weeks[week]._id %>/delete" onclick="confirmDelete(event)">Delete</a>
+                </p>
+                <% } %>
+              </div>
         </div>
         </div>
 
@@ -82,6 +85,18 @@
             // If user clicks "Cancel" or closes the alert, do nothing
           }
         });
+
+        // Function to handle the deletion confirmation
+        function confirmDelete(event) {
+            // Prevent the default behavior of the link
+            event.preventDefault();
+
+            // Display a confirmation dialog
+            if (confirm('Are you sure you want to delete?')) {
+            // If the user clicks "OK" in the confirmation dialog, navigate to the delete link
+            window.location.href = event.target.href;
+            }
+        }
       </script>
     
 

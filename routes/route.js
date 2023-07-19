@@ -47,6 +47,7 @@ const {
     addTopicToWeek,
     deleteWeek,
     deleteAllWeeks,
+    viewAllWeeks,
 } = require('../controllers/week');
 
 const {
@@ -116,7 +117,8 @@ router.use(requireLogin)
 
 router.post("/week/create", createWeek)
 router.get("/subjects/:subjectId/plan", listWeek);
-router.get("/subjects/:subjectId/plan/:weekId", singleWeek);
+// router.get("/subjects/:subjectId/plan/:weekId", singleWeek);
+router.get("/subjects/:subjectId/plan/viewAllWeeks", viewAllWeeks);
 router.get("/subjects/:subjectId/plan/:weekId/delete", deleteWeek);
 router.post("/subjects/:subjectId/plan/deleteAllWeeks", deleteAllWeeks);
 
